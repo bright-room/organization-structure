@@ -1,4 +1,5 @@
 HELP.md
+.env
 
 ### IntelliJ IDEA ###
 .idea
@@ -8,6 +9,19 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+### Terraform ###
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
 
 ### AI agents ###
 /.claude/outputs/
