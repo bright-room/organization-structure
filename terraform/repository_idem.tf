@@ -32,6 +32,12 @@ module "repository_idem" {
     }
   }
 
+  organization_secrets = [
+    module.secret_br_github_manager_name.secret_name,
+    module.secret_br_github_manager_email.secret_name,
+    module.secret_auth_token.secret_name
+  ]
+
   teams = {
     (module.team_br_owners.id) = { permission = "admin" }
   }
