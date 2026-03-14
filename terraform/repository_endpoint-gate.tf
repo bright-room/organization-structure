@@ -18,4 +18,11 @@ module "repository_endpoint_gate" {
   teams = {
     (module.team_br_owners.id) = { permission = "admin" }
   }
+
+  organization_secrets = [
+    module.secret_pgp_signing_key.secret_name,
+    module.secret_pgp_signing_key_passphrase.secret_name,
+    module.secret_sonatype_central_password.secret_name,
+    module.secret_sonatype_central_username.secret_name,
+  ]
 }
