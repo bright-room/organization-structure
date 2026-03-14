@@ -1,0 +1,96 @@
+name: on-pull-request
+
+on:
+  pull_request:
+
+jobs:
+  check-code-style:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: terraform
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.7
+
+      - name: Check code-style
+        run: terraform fmt -recursive -check
+
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: terraform
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.7
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init (Check Lockfile)
+        run: terraform init -lockfile=readonly
+
+      - name: Terraform validate
+        run: terraform validate -no-color
+
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: terraform
+    needs:
+      - check-code-style
+      - validate
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.7
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        run: terraform init -lockfile=readonly
+
+      - name: Terraform plan
+        id: plan
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: terraform plan -no-color
+
+      - name: Plan result
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          comment=$(cat <<'EOS'
+          <details>
+          <summary>Terraform Plan</summary>
+
+          ```
+          ${{ steps.plan.outputs.stdout }}
+          ```
+
+          </details>
+          EOS)
+          gh pr comment ${{ github.event.number }} --body "${comment}"
