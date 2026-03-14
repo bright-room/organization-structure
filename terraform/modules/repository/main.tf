@@ -201,6 +201,64 @@ resource "github_repository_ruleset" "default_branch" {
   }
 }
 
+resource "github_repository_ruleset" "this" {
+  for_each = var.rulesets
+
+  name        = each.key
+  repository  = github_repository.this.name
+  target      = each.value.target
+  enforcement = each.value.enforcement
+
+  conditions {
+    ref_name {
+      include = each.value.conditions.ref_name.include
+      exclude = each.value.conditions.ref_name.exclude
+    }
+  }
+
+  dynamic "bypass_actors" {
+    for_each = each.value.bypass_actors
+
+    content {
+      actor_id    = bypass_actors.value.actor_id
+      actor_type  = bypass_actors.value.actor_type
+      bypass_mode = bypass_actors.value.bypass_mode
+    }
+  }
+
+  rules {
+    creation         = each.value.rules.creation
+    update           = each.value.rules.update
+    deletion         = each.value.rules.deletion
+    non_fast_forward = each.value.rules.non_fast_forward
+
+    dynamic "pull_request" {
+      for_each = each.value.rules.pull_request != null ? [each.value.rules.pull_request] : []
+
+      content {
+        dismiss_stale_reviews_on_push   = pull_request.value.dismiss_stale_reviews_on_push
+        require_code_owner_review       = pull_request.value.require_code_owner_review
+        required_approving_review_count = pull_request.value.required_approving_review_count
+      }
+    }
+
+    dynamic "required_status_checks" {
+      for_each = length(each.value.rules.required_status_checks) > 0 ? [true] : []
+
+      content {
+        dynamic "required_check" {
+          for_each = each.value.rules.required_status_checks
+
+          content {
+            context        = required_check.value.context
+            integration_id = required_check.value.integration_id
+          }
+        }
+      }
+    }
+  }
+}
+
 resource "github_actions_organization_secret_repository" "this" {
   for_each = var.organization_secrets
 
