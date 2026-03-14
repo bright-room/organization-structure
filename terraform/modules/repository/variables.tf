@@ -92,6 +92,12 @@ variable "is_template" {
   default     = false
 }
 
+variable "archived" {
+  description = "Whether to archive this repository"
+  type        = bool
+  default     = false
+}
+
 variable "archive_on_destroy" {
   description = "Archive repository instead of deleting on destroy"
   type        = bool

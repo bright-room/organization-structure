@@ -13,6 +13,7 @@ resource "github_repository" "this" {
   delete_branch_on_merge = var.delete_branch_on_merge
   auto_init              = var.auto_init
   is_template            = var.is_template
+  archived               = var.archived
   archive_on_destroy     = var.archive_on_destroy
   vulnerability_alerts   = var.vulnerability_alerts
   topics                 = var.topics
