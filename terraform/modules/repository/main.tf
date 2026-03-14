@@ -201,6 +201,13 @@ resource "github_repository_ruleset" "default_branch" {
   }
 }
 
+resource "github_actions_organization_secret_repository" "this" {
+  for_each = var.organization_secrets
+
+  secret_name   = each.value
+  repository_id = github_repository.this.repo_id
+}
+
 resource "github_team_repository" "this" {
   for_each = var.teams
 

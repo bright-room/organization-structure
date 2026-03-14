@@ -5,6 +5,11 @@ module "repository_organization_structure" {
   description = "Terraform configuration for bright-room GitHub organization"
   topics      = ["github", "terraform", "github-management", "iac"]
 
+  organization_secrets = [
+    module.secret_auth_token.secret_name,
+    module.secret_tf_api_token.secret_name
+  ]
+
   default_branch_protection = {
     required_status_checks = [
       { context = "check-code-style" },

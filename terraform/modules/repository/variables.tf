@@ -133,6 +133,12 @@ variable "default_branch_protection" {
   default = {}
 }
 
+variable "organization_secrets" {
+  description = "List of organization secret names to grant access to this repository"
+  type        = set(string)
+  default     = []
+}
+
 variable "teams" {
   description = "Map of team assignments keyed by team_id"
   type = map(object({
