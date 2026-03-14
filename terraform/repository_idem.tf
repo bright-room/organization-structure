@@ -15,6 +15,23 @@ module "repository_idem" {
     ]
   }
 
+  rulesets = {
+    "protect-tags" = {
+      target = "tag"
+      conditions = {
+        ref_name = { include = ["~ALL"] }
+      }
+      bypass_actors = [
+        { actor_id = module.team_br_owners.id, actor_type = "Team" }
+      ]
+      rules = {
+        creation = true
+        update   = true
+        deletion = true
+      }
+    }
+  }
+
   teams = {
     (module.team_br_owners.id) = { permission = "admin" }
   }

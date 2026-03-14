@@ -133,6 +133,41 @@ variable "default_branch_protection" {
   default = {}
 }
 
+variable "rulesets" {
+  description = "Map of repository rulesets to create"
+  type = map(object({
+    target      = string
+    enforcement = optional(string, "active")
+    conditions = object({
+      ref_name = object({
+        include = list(string)
+        exclude = optional(list(string), [])
+      })
+    })
+    bypass_actors = optional(list(object({
+      actor_id    = number
+      actor_type  = string
+      bypass_mode = optional(string, "always")
+    })), [])
+    rules = object({
+      creation         = optional(bool, false)
+      update           = optional(bool, false)
+      deletion         = optional(bool, false)
+      non_fast_forward = optional(bool, false)
+      pull_request = optional(object({
+        dismiss_stale_reviews_on_push   = optional(bool, false)
+        require_code_owner_review       = optional(bool, false)
+        required_approving_review_count = optional(number, 1)
+      }), null)
+      required_status_checks = optional(list(object({
+        context        = string
+        integration_id = optional(number, null)
+      })), [])
+    })
+  }))
+  default = {}
+}
+
 variable "organization_secrets" {
   description = "List of organization secret names to grant access to this repository"
   type        = set(string)
