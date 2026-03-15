@@ -120,11 +120,6 @@ variable "default_branch_protection" {
   description = "Default branch protection ruleset configuration"
   type = object({
     enabled = optional(bool, true)
-    bypass_actors = optional(list(object({
-      actor_id    = number
-      actor_type  = string
-      bypass_mode = optional(string, "always")
-    })), [])
     required_status_checks = optional(list(object({
       context        = string
       integration_id = optional(number, null)
@@ -144,11 +139,6 @@ variable "rulesets" {
         exclude = optional(list(string), [])
       })
     })
-    bypass_actors = optional(list(object({
-      actor_id    = number
-      actor_type  = string
-      bypass_mode = optional(string, "always")
-    })), [])
     rules = object({
       creation         = optional(bool, false)
       update           = optional(bool, false)
@@ -174,15 +164,3 @@ variable "organization_secrets" {
   default     = []
 }
 
-variable "teams" {
-  description = "Map of team assignments keyed by team_id"
-  type = map(object({
-    permission = string
-  }))
-  default = {}
-
-  validation {
-    condition     = alltrue([for t in values(var.teams) : contains(["pull", "triage", "push", "maintain", "admin"], t.permission)])
-    error_message = "Team permission must be 'pull', 'triage', 'push', 'maintain', or 'admin'."
-  }
-}

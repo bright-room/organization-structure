@@ -165,7 +165,7 @@ resource "github_repository_ruleset" "default_branch" {
   }
 
   dynamic "bypass_actors" {
-    for_each = var.default_branch_protection.bypass_actors
+    for_each = local.default_bypass_actors
 
     content {
       actor_id    = bypass_actors.value.actor_id
@@ -217,7 +217,7 @@ resource "github_repository_ruleset" "this" {
   }
 
   dynamic "bypass_actors" {
-    for_each = each.value.bypass_actors
+    for_each = local.ruleset_bypass_actors
 
     content {
       actor_id    = bypass_actors.value.actor_id
@@ -267,7 +267,7 @@ resource "github_actions_organization_secret_repository" "this" {
 }
 
 resource "github_team_repository" "this" {
-  for_each = var.teams
+  for_each = local.teams
 
   team_id    = each.key
   repository = github_repository.this.name
