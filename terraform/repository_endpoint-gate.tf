@@ -9,20 +9,12 @@ module "repository_endpoint_gate" {
 
   default_branch_protection = {
     required_status_checks = []
-    bypass_actors = [
-      { actor_id = local.github_app_ids.renovate_bot, actor_type = "Integration" },
-      { actor_id = module.team_br_owners.id, actor_type = "Team" }
-    ]
-  }
-
-  teams = {
-    (module.team_br_owners.id) = { permission = "admin" }
   }
 
   organization_secrets = [
-    module.secret_pgp_signing_key.secret_name,
-    module.secret_pgp_signing_key_passphrase.secret_name,
-    module.secret_sonatype_central_password.secret_name,
-    module.secret_sonatype_central_username.secret_name,
+    local.organization_secrets.pgp_signing_key,
+    local.organization_secrets.pgp_signing_key_passphrase,
+    local.organization_secrets.sonatype_central_password,
+    local.organization_secrets.sonatype_central_username,
   ]
 }

@@ -1,19 +1,13 @@
 locals {
-  # Custom organization role IDs
-  # https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-organization-roles
-  organization_roles = {
-    all_repo_admin    = 8136
-    all_repo_maintain = 8135
-    all_repo_read     = 8132
-    all_repo_triage   = 8133
-    all_repo_write    = 8134
-    app_manager       = 33679
-    ci_cd_admin       = 26237
-    security_manager  = 138
-  }
-
-  # GitHub App IDs for ruleset bypass_actors
-  github_app_ids = {
-    renovate_bot = 2740
+  # Organization secret names (managed by organization-structure-administrator)
+  organization_secrets = {
+    auth_token                 = "AUTH_TOKEN"
+    tf_api_token               = "TF_API_TOKEN"
+    pgp_signing_key            = "PGP_SIGNING_KEY"
+    pgp_signing_key_passphrase = "PGP_SIGNING_KEY_PASSPHRASE"
+    sonatype_central_password  = "SONATYPE_CENTRAL_PASSWORD"
+    sonatype_central_username  = "SONATYPE_CENTRAL_USERNAME"
+    br_github_manager_name     = "BR_GITHUB_MANAGER_NAME"
+    br_github_manager_email    = "BR_GITHUB_MANAGER_EMAIL"
   }
 }

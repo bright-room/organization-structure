@@ -9,10 +9,6 @@ module "repository_idem" {
 
   default_branch_protection = {
     required_status_checks = []
-    bypass_actors = [
-      { actor_id = local.github_app_ids.renovate_bot, actor_type = "Integration" },
-      { actor_id = module.team_br_owners.id, actor_type = "Team" }
-    ]
   }
 
   rulesets = {
@@ -21,9 +17,6 @@ module "repository_idem" {
       conditions = {
         ref_name = { include = ["~ALL"] }
       }
-      bypass_actors = [
-        { actor_id = module.team_br_owners.id, actor_type = "Team" }
-      ]
       rules = {
         creation = true
         update   = true
@@ -33,12 +26,8 @@ module "repository_idem" {
   }
 
   organization_secrets = [
-    module.secret_br_github_manager_name.secret_name,
-    module.secret_br_github_manager_email.secret_name,
-    module.secret_auth_token.secret_name
+    local.organization_secrets.br_github_manager_name,
+    local.organization_secrets.br_github_manager_email,
+    local.organization_secrets.auth_token,
   ]
-
-  teams = {
-    (module.team_br_owners.id) = { permission = "admin" }
-  }
 }
