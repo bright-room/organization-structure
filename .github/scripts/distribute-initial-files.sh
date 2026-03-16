@@ -24,6 +24,7 @@ declare -A FILE_MAP=(
 )
 
 has_changes=false
+summary=""
 
 # Copy template files
 for template in "${!FILE_MAP[@]}"; do
@@ -44,6 +45,15 @@ for template in "${!FILE_MAP[@]}"; do
   cp "$src" "$dest"
   echo "Copied ${template} -> ${FILE_MAP[$template]}"
   has_changes=true
+
+  case "${FILE_MAP[$template]}" in
+    renovate.json)
+      summary="${summary}- Add \`renovate.json\` for automated dependency updates\n"
+      ;;
+    .github/CODEOWNERS)
+      summary="${summary}- Add \`.github/CODEOWNERS\` for code review assignments\n"
+      ;;
+  esac
 done
 
 # Add claude-skills submodule
@@ -54,6 +64,12 @@ else
   git submodule add "$SUBMODULE_REPO" "$SUBMODULE_PATH"
   echo "Added claude-skills submodule at ${SUBMODULE_PATH}"
   has_changes=true
+  summary="${summary}- Add \`claude-skills\` as a git submodule at \`${SUBMODULE_PATH}\`\n"
 fi
 
 echo "has_changes=${has_changes}" >> "$GITHUB_OUTPUT"
+{
+  echo "summary<<EOF"
+  echo -e "$summary"
+  echo "EOF"
+} >> "$GITHUB_OUTPUT"
