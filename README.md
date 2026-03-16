@@ -1,1 +1,106 @@
 # organization-structure
+
+[日本語版はこちら](README_ja.md)
+
+Terraform configuration for managing GitHub repositories in the **bright-room** organization.
+
+## Overview
+
+This repository manages the lifecycle of public repositories within the bright-room GitHub organization using Terraform. It handles repository creation, issue label configuration, branch protection rulesets, team access permissions, and organization secret assignments.
+
+For organization-level resources (members, teams, secrets, meta-repositories), see [organization-structure-administrator](https://github.com/bright-room/organization-structure-administrator).
+
+## Managed Resources
+
+| Resource Type | Description |
+|---|---|
+| Repositories | Public repositories with settings, descriptions, and topics |
+| Issue Labels | Standardized label sets (Priority, Type, Close) |
+| Branch Protection | Default branch rulesets with required approving reviews |
+| Tag Protection | Custom rulesets for tag creation/update/deletion |
+| Team Access | Repository-level team permissions (push, maintain, admin) |
+| Organization Secrets | Per-repository access grants to organization-level secrets |
+
+## Directory Structure
+
+```
+organization-structure/
+├── .github/workflows/
+│   ├── on-pull-request.yml   # Format check, validate, plan on PR
+│   └── on-merge.yml          # Auto-apply on merge to main
+├── terraform/
+│   ├── _terraform.tf         # Provider and backend configuration
+│   ├── _data.tf              # Data sources (team lookups)
+│   ├── _locals.tf            # Organization secrets map
+│   ├── repository_*.tf       # One file per managed repository
+│   └── modules/
+│       └── repository/       # Reusable repository module
+│           ├── main.tf
+│           ├── variables.tf
+│           ├── outputs.tf
+│           ├── data.tf
+│           ├── locals.tf
+│           └── terraform.tf
+└── README.md
+```
+
+## How to Add a New Repository
+
+1. Create a new file `terraform/repository_<name>.tf` (use hyphens in the repository name, underscores in the filename):
+
+    ```hcl
+    module "repository_example" {
+      source = "./modules/repository"
+
+      name        = "example-repo"
+      description = "Description of the repository"
+      topics      = ["topic1", "topic2"]
+
+      organization_secret_names = [
+        # Add organization secret names if needed
+        # e.g., "AUTH_TOKEN", "PGP_SIGNING_KEY"
+      ]
+    }
+    ```
+
+2. (Optional) Add custom rulesets if you need tag protection or additional branch rules:
+
+    ```hcl
+    module "repository_example" {
+      source = "./modules/repository"
+
+      # ... base config ...
+
+      custom_rulesets = [
+        {
+          name          = "tag-protection"
+          target        = "tag"
+          tag_pattern   = "*"
+          creation      = true
+          update        = true
+          deletion      = true
+          bypass_actors = []  # Empty to block all, or add specific actors
+        }
+      ]
+    }
+    ```
+
+3. Open a pull request. The CI pipeline will run `terraform fmt`, `terraform validate`, and `terraform plan` automatically.
+
+4. After review and approval, merge to `main`. Terraform apply runs automatically.
+
+## Prerequisites
+
+- [Terraform](https://www.terraform.io/) v1.14.7+
+- [Terraform Cloud](https://app.terraform.io/) account with access to the `bright-room/organization-structure` workspace
+- GitHub personal access token with organization admin permissions (`AUTH_TOKEN`)
+- Terraform Cloud API token (`TF_API_TOKEN`)
+
+## CI/CD Pipeline
+
+| Trigger | Workflow | Jobs |
+|---|---|---|
+| Pull Request | `on-pull-request.yml` | `check-code-style` (fmt) → `validate` → `plan` (posts plan as PR comment) |
+| Merge to main | `on-merge.yml` | `apply` (auto-approve) |
+
+Both workflows use Terraform v1.14.7 and require `AUTH_TOKEN` and `TF_API_TOKEN` secrets.
