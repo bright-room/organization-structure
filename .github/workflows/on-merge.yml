@@ -8,9 +8,6 @@ on:
       - 'terraform/**'
       - '.github/workflows/**'
 
-env:
-  EXCLUDE_REPOS: '["claude-skills", "organization-structure", "prompts"]'
-
 jobs:
   apply:
     runs-on: ubuntu-latest
@@ -38,24 +35,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
         run: terraform apply -no-color -auto-approve
 
-      - name: Detect new repositories
-        id: detect
-        run: |
-          exclude='${{ env.EXCLUDE_REPOS }}'
-          repos=$(echo '${{ steps.apply.outputs.stdout }}' \
-            | grep -oP 'module\.repository_\K[^.]+(?=\.github_repository\.this: Creation complete)' \
-            | sed 's/_/-/g' \
-            | jq -R -s -c --argjson exclude "${exclude}" 'split("\n") | map(select(length > 0)) | map(select(. as $n | $exclude | index($n) | not))' \
-            || echo '[]')
-          echo "repos=${repos}" >> "$GITHUB_OUTPUT"
-
-      - name: Distribute claude-skills to new repositories
-        if: steps.detect.outputs.repos != '[]'
+      - name: Distribute initial files to new repositories
         env:
+          TF_APPLY_OUTPUT: ${{ steps.apply.outputs.stdout }}
           GH_TOKEN: ${{ secrets.AUTH_TOKEN }}
-        run: |
-          for repo in $(echo '${{ steps.detect.outputs.repos }}' | jq -r '.[]'); do
-            gh workflow run distribute-claude-skills.yml \
-              -f target_repo="${repo}" \
-              --repo bright-room/organization-structure
-          done
+        run: bash "${GITHUB_WORKSPACE}/.github/scripts/trigger-distribute-for-new-repos.sh"
