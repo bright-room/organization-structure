@@ -38,7 +38,7 @@ jobs:
               echo "repos=[\"${{ inputs.target_repo }}\"]" >> "$GITHUB_OUTPUT"
             fi
           else
-            repos=$(gh repo list bright-room --json name --jq --argjson exclude "${exclude}" '[.[].name] | map(select(. as $n | $exclude | index($n) | not))' --limit 100)
+            repos=$(gh repo list bright-room --json name --limit 100 | jq -c --argjson exclude "${exclude}" '[.[].name] | map(select(. as $n | $exclude | index($n) | not))')
             echo "repos=${repos}" >> "$GITHUB_OUTPUT"
           fi
 
