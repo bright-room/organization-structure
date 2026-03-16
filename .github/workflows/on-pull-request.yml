@@ -2,6 +2,9 @@ name: on-pull-request
 
 on:
   pull_request:
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/**'
 
 jobs:
   check-code-style:
