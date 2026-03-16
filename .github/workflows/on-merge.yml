@@ -8,6 +8,9 @@ on:
       - 'terraform/**'
       - '.github/workflows/**'
 
+env:
+  EXCLUDE_REPOS: '["claude-skills", "organization-structure", "prompts"]'
+
 jobs:
   apply:
     runs-on: ubuntu-latest
@@ -38,10 +41,11 @@ jobs:
       - name: Detect new repositories
         id: detect
         run: |
+          exclude='${{ env.EXCLUDE_REPOS }}'
           repos=$(echo '${{ steps.apply.outputs.stdout }}' \
             | grep -oP 'module\.repository_\K[^.]+(?=\.github_repository\.this: Creation complete)' \
             | sed 's/_/-/g' \
-            | jq -R -s -c 'split("\n") | map(select(length > 0))' \
+            | jq -R -s -c --argjson exclude "${exclude}" 'split("\n") | map(select(length > 0)) | map(select(. as $n | $exclude | index($n) | not))' \
             || echo '[]')
           echo "repos=${repos}" >> "$GITHUB_OUTPUT"
 
