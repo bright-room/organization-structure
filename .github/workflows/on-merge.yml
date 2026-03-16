@@ -30,6 +30,28 @@ jobs:
         run: terraform init -lockfile=readonly
 
       - name: Terraform apply
+        id: apply
         env:
           GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
         run: terraform apply -no-color -auto-approve
+
+      - name: Detect new repositories
+        id: detect
+        run: |
+          repos=$(echo '${{ steps.apply.outputs.stdout }}' \
+            | grep -oP 'module\.repository_\K[^.]+(?=\.github_repository\.this: Creation complete)' \
+            | sed 's/_/-/g' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))' \
+            || echo '[]')
+          echo "repos=${repos}" >> "$GITHUB_OUTPUT"
+
+      - name: Distribute claude-skills to new repositories
+        if: steps.detect.outputs.repos != '[]'
+        env:
+          GH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: |
+          for repo in $(echo '${{ steps.detect.outputs.repos }}' | jq -r '.[]'); do
+            gh workflow run distribute-claude-skills.yml \
+              -f target_repo="${repo}" \
+              --repo bright-room/organization-structure
+          done
