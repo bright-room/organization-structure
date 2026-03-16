@@ -1,1 +1,3 @@
 * @bright-room/br-owners
+/terraform/repository_*.tf @bright-room/br-maintainers
+/terraform/_locals.tf @bright-room/br-maintainers
