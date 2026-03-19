@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Distributes initial template files and claude-skills submodule to a target repository.
+# Distributes initial template files to a target repository.
 #
 # Required environment variables:
 #   TARGET_REPO_DIR  - Path to the checked-out target repository
@@ -12,9 +12,6 @@ set -euo pipefail
 
 : "${TARGET_REPO_DIR:?TARGET_REPO_DIR is required}"
 : "${TEMPLATES_DIR:?TEMPLATES_DIR is required}"
-
-SUBMODULE_REPO="https://github.com/bright-room/claude-skills.git"
-SUBMODULE_PATH=".claude/skills/shared"
 
 # Define file mappings: template_file -> destination_path (relative to target repo)
 # Template files use .template extension to avoid being recognized by tools in this repository.
@@ -55,17 +52,6 @@ for template in "${!FILE_MAP[@]}"; do
       ;;
   esac
 done
-
-# Add claude-skills submodule
-cd "$TARGET_REPO_DIR"
-if [ -f .gitmodules ] && grep -q "claude-skills" .gitmodules; then
-  echo "Skipping claude-skills submodule (already exists)"
-else
-  git submodule add "$SUBMODULE_REPO" "$SUBMODULE_PATH"
-  echo "Added claude-skills submodule at ${SUBMODULE_PATH}"
-  has_changes=true
-  summary="${summary}- Add \`claude-skills\` as a git submodule at \`${SUBMODULE_PATH}\`\n"
-fi
 
 echo "has_changes=${has_changes}" >> "$GITHUB_OUTPUT"
 {
