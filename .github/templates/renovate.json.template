@@ -12,16 +12,5 @@
   "major": {
     "minimumReleaseAge": "7 days",
     "automerge": false
-  },
-  "gitSubmodules": {
-    "enabled": true,
-    "automerge": true
-  },
-  "packageRules": [
-    {
-      "matchManagers": ["git-submodules"],
-      "commitMessagePrefix": "chore(submodule): ",
-      "labels": ["dependencies", "submodule", "renovate"]
-    }
-  ]
+  }
 }
