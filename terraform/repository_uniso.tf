@@ -1,4 +1,3 @@
-
 module "repository_uniso" {
   source = "./modules/repository"
 
@@ -8,6 +7,29 @@ module "repository_uniso" {
   topics      = ["kotlin", "compose-multiplatform", "desktop-app", "sns", "social-media", "dashboard", "webview", "kcef", "multiplatform", "jetbrains-compose"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = [
+      { context = "lint" },
+      { context = "check" }
+    ]
   }
+
+  rulesets = {
+    "protect-tags" = {
+      target = "tag"
+      conditions = {
+        ref_name = { include = ["~ALL"] }
+      }
+      rules = {
+        creation = true
+        update   = true
+        deletion = true
+      }
+    }
+  }
+
+  organization_secrets = [
+    local.organization_secrets.br_github_manager_name,
+    local.organization_secrets.br_github_manager_email,
+    local.organization_secrets.auth_token,
+  ]
 }
