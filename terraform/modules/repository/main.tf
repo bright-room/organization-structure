@@ -201,6 +201,24 @@ resource "github_repository_ruleset" "default_branch" {
   }
 }
 
+resource "github_repository_ruleset" "required_signatures" {
+  name        = "require-signed-commits"
+  repository  = github_repository.this.name
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~ALL"]
+      exclude = []
+    }
+  }
+
+  rules {
+    required_signatures = true
+  }
+}
+
 resource "github_repository_ruleset" "this" {
   for_each = var.rulesets
 
@@ -227,10 +245,11 @@ resource "github_repository_ruleset" "this" {
   }
 
   rules {
-    creation         = each.value.rules.creation
-    update           = each.value.rules.update
-    deletion         = each.value.rules.deletion
-    non_fast_forward = each.value.rules.non_fast_forward
+    creation            = each.value.rules.creation
+    update              = each.value.rules.update
+    deletion            = each.value.rules.deletion
+    non_fast_forward    = each.value.rules.non_fast_forward
+    required_signatures = each.value.rules.required_signatures
 
     dynamic "pull_request" {
       for_each = each.value.rules.pull_request != null ? [each.value.rules.pull_request] : []
