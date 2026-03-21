@@ -202,9 +202,11 @@ resource "github_repository_ruleset" "default_branch" {
 }
 
 resource "github_repository_ruleset" "required_signatures" {
-  name        = "require-signed-commits"
+  for_each = toset(["branch", "tag"])
+
+  name        = "require-signed-commits-${each.key}"
   repository  = github_repository.this.name
-  target      = "branch"
+  target      = each.key
   enforcement = "active"
 
   conditions {
