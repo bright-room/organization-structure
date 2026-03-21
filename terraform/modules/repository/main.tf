@@ -175,8 +175,9 @@ resource "github_repository_ruleset" "default_branch" {
   }
 
   rules {
-    deletion         = true
-    non_fast_forward = true
+    deletion            = true
+    non_fast_forward    = true
+    required_signatures = true
 
     pull_request {
       dismiss_stale_reviews_on_push   = false
@@ -227,10 +228,11 @@ resource "github_repository_ruleset" "this" {
   }
 
   rules {
-    creation         = each.value.rules.creation
-    update           = each.value.rules.update
-    deletion         = each.value.rules.deletion
-    non_fast_forward = each.value.rules.non_fast_forward
+    creation            = each.value.rules.creation
+    update              = each.value.rules.update
+    deletion            = each.value.rules.deletion
+    non_fast_forward    = each.value.rules.non_fast_forward
+    required_signatures = each.value.rules.required_signatures
 
     dynamic "pull_request" {
       for_each = each.value.rules.pull_request != null ? [each.value.rules.pull_request] : []

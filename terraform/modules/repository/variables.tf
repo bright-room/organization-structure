@@ -140,10 +140,11 @@ variable "rulesets" {
       })
     })
     rules = object({
-      creation         = optional(bool, false)
-      update           = optional(bool, false)
-      deletion         = optional(bool, false)
-      non_fast_forward = optional(bool, false)
+      creation             = optional(bool, false)
+      update               = optional(bool, false)
+      deletion             = optional(bool, false)
+      non_fast_forward     = optional(bool, false)
+      required_signatures  = optional(bool, false)
       pull_request = optional(object({
         dismiss_stale_reviews_on_push   = optional(bool, false)
         require_code_owner_review       = optional(bool, false)
