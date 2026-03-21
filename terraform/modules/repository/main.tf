@@ -202,8 +202,6 @@ resource "github_repository_ruleset" "default_branch" {
 }
 
 resource "github_repository_ruleset" "required_signatures" {
-  count = var.default_branch_protection.enabled ? 1 : 0
-
   name        = "require-signed-commits"
   repository  = github_repository.this.name
   target      = "branch"
@@ -211,7 +209,7 @@ resource "github_repository_ruleset" "required_signatures" {
 
   conditions {
     ref_name {
-      include = ["~DEFAULT_BRANCH"]
+      include = ["~ALL"]
       exclude = []
     }
   }
