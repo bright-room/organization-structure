@@ -8,8 +8,12 @@ module "repository_uniso" {
 
   default_branch_protection = {
     required_status_checks = [
+      { context = "vulnerability-audit" },
+      { context = "glassworm-detection" },
+      { context = "safe-chain" },
       { context = "lint" },
-      { context = "check" }
+      { context = "check" },
+      { context = "e2e" }
     ]
   }
 
