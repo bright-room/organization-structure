@@ -4,7 +4,7 @@ module "repository_uniso" {
   name        = "uniso"
   description = "A unified desktop client for managing multiple SNS accounts in one place."
   visibility  = "public"
-  topics      = ["kotlin", "compose-multiplatform", "desktop-app", "sns", "social-media", "dashboard", "webview", "kcef", "multiplatform", "jetbrains-compose"]
+  topics      = ["electron", "react", "typescript", "vite", "pnpm", "desktop-app", "sns", "social-media", "multi-account"]
 
   default_branch_protection = {
     required_status_checks = [
