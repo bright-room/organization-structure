@@ -175,9 +175,8 @@ resource "github_repository_ruleset" "default_branch" {
   }
 
   rules {
-    deletion            = true
-    non_fast_forward    = true
-    required_signatures = true
+    deletion         = true
+    non_fast_forward = true
 
     pull_request {
       dismiss_stale_reviews_on_push   = false
@@ -199,6 +198,26 @@ resource "github_repository_ruleset" "default_branch" {
         }
       }
     }
+  }
+}
+
+resource "github_repository_ruleset" "required_signatures" {
+  count = var.default_branch_protection.enabled ? 1 : 0
+
+  name        = "require-signed-commits"
+  repository  = github_repository.this.name
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+  }
+
+  rules {
+    required_signatures = true
   }
 }
 
