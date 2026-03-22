@@ -7,8 +7,6 @@ locals {
     pgp_signing_key_passphrase = "PGP_SIGNING_KEY_PASSPHRASE"
     sonatype_central_password  = "SONATYPE_CENTRAL_PASSWORD"
     sonatype_central_username  = "SONATYPE_CENTRAL_USERNAME"
-    br_github_manager_name     = "BR_GITHUB_MANAGER_NAME"
-    br_github_manager_email    = "BR_GITHUB_MANAGER_EMAIL"
   }
 
   # Organization variable names (managed by organization-structure-administrator)

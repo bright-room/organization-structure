@@ -32,8 +32,6 @@ module "repository_uniso" {
   }
 
   organization_secrets = [
-    local.organization_secrets.br_github_manager_name,
-    local.organization_secrets.br_github_manager_email,
     local.organization_secrets.chloe_chan_app_private_key,
   ]
 
