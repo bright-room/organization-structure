@@ -58,7 +58,7 @@ organization-structure/
 
       organization_secret_names = [
         # Add organization secret names if needed
-        # e.g., "AUTH_TOKEN", "PGP_SIGNING_KEY"
+        # e.g., "CHLOE_CHAN_APP_PRIVATE_KEY", "PGP_SIGNING_KEY"
       ]
     }
     ```
@@ -93,7 +93,7 @@ organization-structure/
 
 - [Terraform](https://www.terraform.io/) v1.14.7+
 - [Terraform Cloud](https://app.terraform.io/) account with access to the `bright-room/organization-structure` workspace
-- GitHub personal access token with organization admin permissions (`AUTH_TOKEN`)
+- GitHub App credentials for chloe-chan-bot (`CHLOE_CHAN_APP_ID` variable, `CHLOE_CHAN_APP_PRIVATE_KEY` secret)
 - Terraform Cloud API token (`TF_API_TOKEN`)
 
 ## CI/CD Pipeline
@@ -103,4 +103,4 @@ organization-structure/
 | Pull Request | `on-pull-request.yml` | `check-code-style` (fmt) → `validate` → `plan` (posts plan as PR comment) |
 | Merge to main | `on-merge.yml` | `apply` (auto-approve) |
 
-Both workflows use Terraform v1.14.7 and require `AUTH_TOKEN` and `TF_API_TOKEN` secrets.
+Both workflows use Terraform v1.14.7 and require `CHLOE_CHAN_APP_PRIVATE_KEY`, `CHLOE_CHAN_APP_ID`, and `TF_API_TOKEN`.

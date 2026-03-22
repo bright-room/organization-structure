@@ -58,7 +58,7 @@ organization-structure/
 
       organization_secret_names = [
         # 必要に応じてOrganization Secret名を追加
-        # 例: "AUTH_TOKEN", "PGP_SIGNING_KEY"
+        # 例: "CHLOE_CHAN_APP_PRIVATE_KEY", "PGP_SIGNING_KEY"
       ]
     }
     ```
@@ -93,7 +93,7 @@ organization-structure/
 
 - [Terraform](https://www.terraform.io/) v1.14.7以上
 - [Terraform Cloud](https://app.terraform.io/) の `bright-room/organization-structure` ワークスペースへのアクセス
-- 組織管理者権限を持つGitHub個人アクセストークン（`AUTH_TOKEN`）
+- chloe-chan-botのGitHub App認証情報（`CHLOE_CHAN_APP_ID` variable、`CHLOE_CHAN_APP_PRIVATE_KEY` secret）
 - Terraform Cloud APIトークン（`TF_API_TOKEN`）
 
 ## CI/CDパイプライン
@@ -103,4 +103,4 @@ organization-structure/
 | プルリクエスト | `on-pull-request.yml` | `check-code-style`（fmt）→ `validate` → `plan`（PRコメントにプランを投稿） |
 | mainへのマージ | `on-merge.yml` | `apply`（自動適用） |
 
-両ワークフローはTerraform v1.14.7を使用し、`AUTH_TOKEN` と `TF_API_TOKEN` シークレットが必要です。
+両ワークフローはTerraform v1.14.7を使用し、`CHLOE_CHAN_APP_PRIVATE_KEY`、`CHLOE_CHAN_APP_ID`、`TF_API_TOKEN` が必要です。
