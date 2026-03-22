@@ -17,20 +17,6 @@ module "repository_uniso" {
     ]
   }
 
-  rulesets = {
-    "protect-tags" = {
-      target = "tag"
-      conditions = {
-        ref_name = { include = ["~ALL"] }
-      }
-      rules = {
-        creation = true
-        update   = true
-        deletion = true
-      }
-    }
-  }
-
   organization_secrets = [
     local.organization_secrets.chloe_chan_app_private_key,
   ]

@@ -179,8 +179,8 @@ resource "github_repository_ruleset" "default_branch" {
     non_fast_forward = true
 
     pull_request {
-      dismiss_stale_reviews_on_push   = false
-      require_code_owner_review       = false
+      dismiss_stale_reviews_on_push   = true
+      require_code_owner_review       = true
       required_approving_review_count = 1
     }
 
@@ -198,6 +198,36 @@ resource "github_repository_ruleset" "default_branch" {
         }
       }
     }
+  }
+}
+
+resource "github_repository_ruleset" "protect_tags" {
+  name        = "protect-tags"
+  repository  = github_repository.this.name
+  target      = "tag"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["~ALL"]
+      exclude = []
+    }
+  }
+
+  dynamic "bypass_actors" {
+    for_each = local.protect_tag_bypass_actors
+
+    content {
+      actor_id    = bypass_actors.value.actor_id
+      actor_type  = bypass_actors.value.actor_type
+      bypass_mode = bypass_actors.value.bypass_mode
+    }
+  }
+
+  rules {
+    creation = true
+    update   = true
+    deletion = true
   }
 }
 

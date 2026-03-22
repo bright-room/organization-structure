@@ -8,21 +8,11 @@ module "repository_idem" {
   topics      = ["go", "golang", "middleware", "idempotency", "idempotency-key", "http-middleware", "rest-api", "gin", "echo", "redis"]
 
   default_branch_protection = {
-    required_status_checks = []
-  }
-
-  rulesets = {
-    "protect-tags" = {
-      target = "tag"
-      conditions = {
-        ref_name = { include = ["~ALL"] }
-      }
-      rules = {
-        creation = true
-        update   = true
-        deletion = true
-      }
-    }
+    required_status_checks = [
+      { context = "lint" },
+      { context = "unit-test" },
+      { context = "integration-test" }
+    ]
   }
 
   organization_secrets = [
