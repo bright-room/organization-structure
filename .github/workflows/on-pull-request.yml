@@ -63,14 +63,6 @@ jobs:
       - validate
 
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.MINERVA_SAMA_APP_ID }}
-          private-key: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
-          owner: bright-room
-
       - name: Checkout Repository
         uses: actions/checkout@v6
 
@@ -87,12 +79,12 @@ jobs:
         id: plan
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
         run: terraform plan -no-color
 
       - name: Plan result
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           comment=$(cat <<'EOS'
           <details>
