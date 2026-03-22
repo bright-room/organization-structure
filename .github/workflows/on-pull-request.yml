@@ -79,7 +79,9 @@ jobs:
         id: plan
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          GITHUB_APP_ID: ${{ secrets.MINERVA_SAMA_APP_ID }}
+          GITHUB_APP_INSTALLATION_ID: ${{ secrets.MINERVA_SAMA_INSTALLATION_ID }}
+          GITHUB_APP_PEM_FILE: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
         run: terraform plan -no-color
 
       - name: Plan result

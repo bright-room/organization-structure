@@ -17,6 +17,14 @@ jobs:
         working-directory: terraform
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.MINERVA_SAMA_APP_ID }}
+          private-key: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
+          owner: bright-room
+
       - name: Checkout Repository
         uses: actions/checkout@v6
 
@@ -32,11 +40,13 @@ jobs:
       - name: Terraform apply
         id: apply
         env:
-          GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          GITHUB_APP_ID: ${{ secrets.MINERVA_SAMA_APP_ID }}
+          GITHUB_APP_INSTALLATION_ID: ${{ secrets.MINERVA_SAMA_INSTALLATION_ID }}
+          GITHUB_APP_PEM_FILE: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
         run: terraform apply -no-color -auto-approve
 
       - name: Distribute initial files to new repositories
         env:
           TF_APPLY_OUTPUT: ${{ steps.apply.outputs.stdout }}
-          GH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: bash "${GITHUB_WORKSPACE}/.github/scripts/trigger-distribute-for-new-repos.sh"
