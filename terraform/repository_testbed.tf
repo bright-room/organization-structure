@@ -1,11 +1,11 @@
 
-module "repository_sandbox" {
+module "repository_testbed" {
   source = "./modules/repository"
 
-  name        = "sandbox"
-  description = "Sandbox repository for testing GitHub App integration with Terraform."
+  name        = "testbed"
+  description = "Integration testing repository for validating GitHub App workflows with Terraform."
   visibility  = "public"
-  topics      = ["sandbox", "testing"]
+  topics      = ["testing", "integration-test"]
 
   default_branch_protection = {
     required_status_checks = [
