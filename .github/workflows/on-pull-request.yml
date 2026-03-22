@@ -93,15 +93,16 @@ jobs:
       - name: Plan result
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
         run: |
-          comment=$(cat <<'EOS'
+          cat <<EOF > /tmp/comment.md
           <details>
           <summary>Terraform Plan</summary>
 
-          ```
-          ${{ steps.plan.outputs.stdout }}
-          ```
+          \`\`\`
+          ${PLAN_OUTPUT}
+          \`\`\`
 
           </details>
-          EOS)
-          gh pr comment ${{ github.event.number }} --body "${comment}"
+          EOF
+          gh pr comment ${{ github.event.number }} --body-file /tmp/comment.md
