@@ -8,7 +8,11 @@ module "repository_endpoint_gate" {
   topics      = ["java", "library", "endpoint-gate", "feature-flag", "spring", "access-control", "rollout"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = [
+      { context = "lint" },
+      { context = "unit-test" },
+      { context = "integration-test" }
+    ]
   }
 
   organization_secrets = [
