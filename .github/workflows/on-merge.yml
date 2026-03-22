@@ -40,9 +40,7 @@ jobs:
       - name: Terraform apply
         id: apply
         env:
-          GITHUB_APP_ID: ${{ vars.MINERVA_SAMA_APP_ID }}
-          GITHUB_APP_INSTALLATION_ID: ${{ vars.MINERVA_SAMA_INSTALLATION_ID }}
-          GITHUB_APP_PEM_FILE: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: terraform apply -no-color -auto-approve
 
       - name: Distribute initial files to new repositories
