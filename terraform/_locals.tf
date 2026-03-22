@@ -1,7 +1,7 @@
 locals {
   # Organization secret names (managed by organization-structure-administrator)
   organization_secrets = {
-    auth_token                 = "AUTH_TOKEN"
+    chloe_chan_app_private_key  = "CHLOE_CHAN_APP_PRIVATE_KEY"
     tf_api_token               = "TF_API_TOKEN"
     pgp_signing_key            = "PGP_SIGNING_KEY"
     pgp_signing_key_passphrase = "PGP_SIGNING_KEY_PASSPHRASE"
@@ -9,5 +9,10 @@ locals {
     sonatype_central_username  = "SONATYPE_CENTRAL_USERNAME"
     br_github_manager_name     = "BR_GITHUB_MANAGER_NAME"
     br_github_manager_email    = "BR_GITHUB_MANAGER_EMAIL"
+  }
+
+  # Organization variable names (managed by organization-structure-administrator)
+  organization_variables = {
+    chloe_chan_app_id = "CHLOE_CHAN_APP_ID"
   }
 }

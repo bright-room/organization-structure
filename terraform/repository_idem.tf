@@ -28,6 +28,10 @@ module "repository_idem" {
   organization_secrets = [
     local.organization_secrets.br_github_manager_name,
     local.organization_secrets.br_github_manager_email,
-    local.organization_secrets.auth_token,
+    local.organization_secrets.chloe_chan_app_private_key,
+  ]
+
+  organization_variables = [
+    local.organization_variables.chloe_chan_app_id,
   ]
 }

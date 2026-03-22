@@ -165,3 +165,9 @@ variable "organization_secrets" {
   default     = []
 }
 
+variable "organization_variables" {
+  description = "List of organization variable names to grant access to this repository"
+  type        = set(string)
+  default     = []
+}
+
