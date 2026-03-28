@@ -18,6 +18,7 @@ set -euo pipefail
 declare -A FILE_MAP=(
   ["renovate.json.template"]="renovate.json"
   ["CODEOWNERS.template"]=".github/CODEOWNERS"
+  ["release.yml.template"]=".github/release.yml"
 )
 
 has_changes=false
@@ -49,6 +50,9 @@ for template in "${!FILE_MAP[@]}"; do
       ;;
     .github/CODEOWNERS)
       summary="${summary}- Add \`.github/CODEOWNERS\` for code review assignments\n"
+      ;;
+    .github/release.yml)
+      summary="${summary}- Add \`.github/release.yml\` for release note categorization\n"
       ;;
   esac
 done

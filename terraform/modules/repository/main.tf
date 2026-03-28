@@ -47,9 +47,9 @@ resource "github_issue_labels" "this" {
   }
 
   label {
-    name        = "dependencies"
-    color       = "ededed"
-    description = "依存ライブラリに関するラベル"
+    name        = "Priority: Critical"
+    color       = "b60205"
+    description = "優先度：緊急"
   }
 
   label {
@@ -59,93 +59,87 @@ resource "github_issue_labels" "this" {
   }
 
   label {
-    name        = "Priority: Low"
-    color       = "4169e1"
-    description = "優先度：低"
-  }
-
-  label {
     name        = "Priority: Medium"
     color       = "ffd700"
     description = "優先度：中"
   }
 
   label {
-    name        = "Release note ignored"
+    name        = "Priority: Low"
+    color       = "4169e1"
+    description = "優先度：低"
+  }
+
+  label {
+    name        = "Meta: Release note ignored"
     color       = "859179"
     description = "リリースノートへの記載しない"
   }
 
   label {
-    name        = "renovate"
-    color       = "ededed"
-    description = ""
+    name        = "Need: Discussion"
+    color       = "da70d6"
+    description = "議論が必要"
   }
 
   label {
-    name        = "Type: Bug"
-    color       = "ff0000"
-    description = "バグ関連"
-  }
-
-  label {
-    name        = "Type: Discussion"
-    color       = "14D658"
-    description = "議論にが必要"
-  }
-
-  label {
-    name        = "Type: Document"
-    color       = "40e0d0"
-    description = "ドキュメント"
-  }
-
-  label {
-    name        = "Type: Enhancement"
-    color       = "89058a"
-    description = "機能強化"
-  }
-
-  label {
-    name        = "Type: Feature"
-    color       = "00bfff"
-    description = "新機能"
-  }
-
-  label {
-    name        = "Type: Help Wanted"
+    name        = "Need: Help Wanted"
     color       = "da70d6"
     description = "他者のヘルプを求む"
   }
 
   label {
-    name        = "Type: Publishing"
-    color       = "00ff00"
-    description = "公開に伴う作業"
-  }
-
-  label {
     name        = "Type: Question"
-    color       = "F8950F"
+    color       = "da70d6"
     description = "Q＆A"
   }
 
   label {
-    name        = "Type: Refactoring"
-    color       = "fa8072"
-    description = "リファクタリング"
+    name        = "Impact: Breaking"
+    color       = "b60205"
+    description = "破壊的変更を含み、後方互換性が失われるような対応"
   }
 
   label {
-    name        = "Type: Specification Change"
-    color       = "fc707d"
-    description = "仕様変更"
+    name        = "Kind: Dependencies"
+    color       = "ededed"
+    description = "依存ライブラリのアップデート"
   }
 
   label {
-    name        = "Type: Test"
+    name        = "Kind: Bug Fix"
+    color       = "ff0000"
+    description = "バグ関連"
+  }
+
+  label {
+    name        = "Kind: Documentation"
+    color       = "40e0d0"
+    description = "ドキュメント追加・修正"
+  }
+
+  label {
+    name        = "Kind: Tests"
     color       = "008000"
-    description = "テスト"
+    description = "テスト追加・修正"
+  }
+
+  label {
+    name        = "Kind: Enhancement"
+    color       = "89058a"
+    description = "機能強化"
+  }
+
+  label {
+    name        = "Kind: Feature"
+    color       = "00bfff"
+    description = "新機能"
+  }
+
+  label {
+    name        = "Kind: Refactoring"
+    color       = "fa8072"
+    description = "内部的なリファクタリング(APIの破壊的変更を伴わない範囲)"
   }
 }
 
