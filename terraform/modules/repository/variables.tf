@@ -53,7 +53,7 @@ variable "has_wiki" {
 variable "has_discussions" {
   description = "Enable discussions"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "allow_merge_commit" {
