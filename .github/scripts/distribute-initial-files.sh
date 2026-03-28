@@ -19,6 +19,8 @@ declare -A FILE_MAP=(
   ["renovate.json.template"]="renovate.json"
   ["CODEOWNERS.template"]=".github/CODEOWNERS"
   ["release.yml.template"]=".github/release.yml"
+  ["settings.json.template"]=".claude/settings.json"
+  ["CLAUDE.md.template"]="CLAUDE.md"
 )
 
 has_changes=false
@@ -54,8 +56,30 @@ for template in "${!FILE_MAP[@]}"; do
     .github/release.yml)
       summary="${summary}- Add \`.github/release.yml\` for release note categorization\n"
       ;;
+    .claude/settings.json)
+      summary="${summary}- Add \`.claude/settings.json\` for claude-dev-workflow plugin\n"
+      ;;
+    CLAUDE.md)
+      summary="${summary}- Add \`CLAUDE.md\` template for Claude Code guidance\n"
+      ;;
   esac
 done
+
+# Fetch project-context-template.md from claude-dev-workflow
+CONTEXT_DEST="${TARGET_REPO_DIR}/.claude/skills/references/project-context.md"
+if [ ! -f "$CONTEXT_DEST" ]; then
+  RAW_URL="https://raw.githubusercontent.com/bright-room/claude-dev-workflow/main/skills/references/project-context-template.md"
+  mkdir -p "$(dirname "$CONTEXT_DEST")"
+  if curl -fsSL "$RAW_URL" -o "$CONTEXT_DEST"; then
+    echo "Fetched project-context-template.md -> .claude/skills/references/project-context.md"
+    has_changes=true
+    summary="${summary}- Add \`.claude/skills/references/project-context.md\` template for skill context\n"
+  else
+    echo "::warning::Failed to fetch project-context-template.md from claude-dev-workflow"
+  fi
+else
+  echo "Skipping .claude/skills/references/project-context.md (already exists)"
+fi
 
 echo "has_changes=${has_changes}" >> "$GITHUB_OUTPUT"
 {
