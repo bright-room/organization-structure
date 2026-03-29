@@ -1,8 +1,3 @@
-moved {
-  from = module.repository_claude_dev_workflow
-  to   = module.repository_br_claude_plugins
-}
-
 module "repository_br_claude_plugins" {
   source = "./modules/repository"
 
