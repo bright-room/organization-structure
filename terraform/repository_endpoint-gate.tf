@@ -20,5 +20,10 @@ module "repository_endpoint_gate" {
     local.organization_secrets.pgp_signing_key_passphrase,
     local.organization_secrets.sonatype_central_password,
     local.organization_secrets.sonatype_central_username,
+    local.organization_secrets.chloe_chan_app_private_key,
+  ]
+
+  organization_variables = [
+    local.organization_variables.chloe_chan_app_id,
   ]
 }
