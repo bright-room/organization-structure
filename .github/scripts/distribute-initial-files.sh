@@ -68,7 +68,7 @@ done
 # Fetch project-context-template.md from br-claude-plugins
 CONTEXT_DEST="${TARGET_REPO_DIR}/.claude/skills/references/project-context.md"
 if [ ! -f "$CONTEXT_DEST" ]; then
-  RAW_URL="https://raw.githubusercontent.com/bright-room/br-claude-plugins/main/skills/references/project-context-template.md"
+  RAW_URL="https://raw.githubusercontent.com/bright-room/br-claude-plugins/refs/heads/main/plugins/dev-workflow/skills/references/project-context-template.md"
   mkdir -p "$(dirname "$CONTEXT_DEST")"
   if curl -fsSL "$RAW_URL" -o "$CONTEXT_DEST"; then
     echo "Fetched project-context-template.md -> .claude/skills/references/project-context.md"
