@@ -57,7 +57,7 @@ for template in "${!FILE_MAP[@]}"; do
       summary="${summary}- Add \`.github/release.yml\` for release note categorization\n"
       ;;
     .claude/settings.json)
-      summary="${summary}- Add \`.claude/settings.json\` for claude-dev-workflow plugin\n"
+      summary="${summary}- Add \`.claude/settings.json\` for br-claude-plugins\n"
       ;;
     CLAUDE.md)
       summary="${summary}- Add \`CLAUDE.md\` template for Claude Code guidance\n"
@@ -65,17 +65,17 @@ for template in "${!FILE_MAP[@]}"; do
   esac
 done
 
-# Fetch project-context-template.md from claude-dev-workflow
+# Fetch project-context-template.md from br-claude-plugins
 CONTEXT_DEST="${TARGET_REPO_DIR}/.claude/skills/references/project-context.md"
 if [ ! -f "$CONTEXT_DEST" ]; then
-  RAW_URL="https://raw.githubusercontent.com/bright-room/claude-dev-workflow/main/skills/references/project-context-template.md"
+  RAW_URL="https://raw.githubusercontent.com/bright-room/br-claude-plugins/main/skills/references/project-context-template.md"
   mkdir -p "$(dirname "$CONTEXT_DEST")"
   if curl -fsSL "$RAW_URL" -o "$CONTEXT_DEST"; then
     echo "Fetched project-context-template.md -> .claude/skills/references/project-context.md"
     has_changes=true
     summary="${summary}- Add \`.claude/skills/references/project-context.md\` template for skill context\n"
   else
-    echo "::warning::Failed to fetch project-context-template.md from claude-dev-workflow"
+    echo "::warning::Failed to fetch project-context-template.md from br-claude-plugins"
   fi
 else
   echo "Skipping .claude/skills/references/project-context.md (already exists)"
