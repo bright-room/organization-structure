@@ -1,3 +1,4 @@
+module "repository_br_claude_plugins" {
   source = "./modules/repository"
 
   name        = "br-claude-plugins"
