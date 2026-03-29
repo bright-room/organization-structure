@@ -10,6 +10,7 @@ module "repository_endpoint_gate" {
   default_branch_protection = {
     required_status_checks = [
       { context = "lint" },
+      { context = "javadoc" },
       { context = "unit-test" },
       { context = "integration-test" }
     ]
