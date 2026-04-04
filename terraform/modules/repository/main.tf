@@ -21,6 +21,7 @@ resource "github_repository" "this" {
   lifecycle {
     ignore_changes = [
       auto_init,
+      pages,
     ]
   }
 }
