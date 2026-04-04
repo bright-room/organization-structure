@@ -11,6 +11,7 @@ module "repository_br_cluster_imager" {
     required_status_checks = [
       { context = "Python Lint" },
       { context = "Python Test" },
-      { context = "Packer Validate" }]
+      { context = "Packer Validate" }
+    ]
   }
 }
