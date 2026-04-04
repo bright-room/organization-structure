@@ -8,6 +8,9 @@ module "repository_br_cluster_imager" {
   topics      = ["terraform", "1password", "packer", "raspberry-pi", "kubernetes", "cloud-init"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = [
+      { context = "Python Lint" },
+      { context = "Python Test" },
+      { context = "Packer Validate" }]
   }
 }
