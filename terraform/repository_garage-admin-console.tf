@@ -1,8 +1,3 @@
-moved {
-  from = module.repository_br_garage_admin_console
-  to   = module.repository_garage_admin_console
-}
-
 module "repository_garage_admin_console" {
   source = "./modules/repository"
 
