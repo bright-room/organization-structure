@@ -7,7 +7,11 @@ module "repository_garage_admin_console" {
   topics      = ["garage", "s3", "admin-console", "kotlin", "ktor", "compose-multiplatform", "material3"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = [
+      { context = "check" },
+      { context = "build" },
+      { context = "e2e" }
+    ]
   }
 
   organization_secrets = [
