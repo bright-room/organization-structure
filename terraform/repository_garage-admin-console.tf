@@ -9,6 +9,7 @@ module "repository_garage_admin_console" {
   default_branch_protection = {
     required_status_checks = [
       { context = "check" },
+      { context = "build" },
       { context = "e2e" }
     ]
   }
