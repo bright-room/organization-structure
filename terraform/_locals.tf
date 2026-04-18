@@ -2,7 +2,6 @@ locals {
   # Organization secret names (managed by organization-structure-administrator)
   organization_secrets = {
     chloe_chan_app_private_key = "CHLOE_CHAN_APP_PRIVATE_KEY"
-    tf_api_token               = "TF_API_TOKEN"
     pgp_signing_key            = "PGP_SIGNING_KEY"
     pgp_signing_key_passphrase = "PGP_SIGNING_KEY_PASSPHRASE"
     sonatype_central_password  = "SONATYPE_CENTRAL_PASSWORD"
