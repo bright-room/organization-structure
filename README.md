@@ -92,9 +92,9 @@ organization-structure/
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/) v1.14.7+
-- [Terraform Cloud](https://app.terraform.io/) account with access to the `bright-room/organization-structure` workspace
+- Cloudflare R2 bucket `github-organization-tfstates` (managed in `br-cloudflare-terraform`) used as the tfstate backend via the S3-compatible API
 - GitHub App credentials for chloe-chan-bot (`CHLOE_CHAN_APP_ID` variable, `CHLOE_CHAN_APP_PRIVATE_KEY` secret)
-- Terraform Cloud API token (`TF_API_TOKEN`)
+- R2 S3-compatible credentials (`GH_ORGANIZATION_TFSTATE_AWS_ACCESS_KEY_ID` / `GH_ORGANIZATION_TFSTATE_AWS_SECRET_ACCESS_KEY`) scoped to the bucket above
 
 ## CI/CD Pipeline
 
@@ -103,4 +103,4 @@ organization-structure/
 | Pull Request | `on-pull-request.yml` | `check-code-style` (fmt) → `validate` → `plan` (posts plan as PR comment) |
 | Merge to main | `on-merge.yml` | `apply` (auto-approve) |
 
-Both workflows use Terraform v1.14.7 and require `CHLOE_CHAN_APP_PRIVATE_KEY`, `CHLOE_CHAN_APP_ID`, and `TF_API_TOKEN`.
+Both workflows use Terraform v1.14.7 and require `CHLOE_CHAN_APP_PRIVATE_KEY`, `CHLOE_CHAN_APP_ID`, `GH_ORGANIZATION_TFSTATE_AWS_ACCESS_KEY_ID`, and `GH_ORGANIZATION_TFSTATE_AWS_SECRET_ACCESS_KEY`.
