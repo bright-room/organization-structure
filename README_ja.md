@@ -92,9 +92,9 @@ organization-structure/
 ## 前提条件
 
 - [Terraform](https://www.terraform.io/) v1.14.7以上
-- [Terraform Cloud](https://app.terraform.io/) の `bright-room/organization-structure` ワークスペースへのアクセス
+- tfstate backend として S3 互換 API 経由で利用する Cloudflare R2 バケット `github-organization-tfstates`（`br-cloudflare-terraform` で管理）
 - chloe-chan-botのGitHub App認証情報（`CHLOE_CHAN_APP_ID` variable、`CHLOE_CHAN_APP_PRIVATE_KEY` secret）
-- Terraform Cloud APIトークン（`TF_API_TOKEN`）
+- 上記バケットにスコープされた R2 の S3 互換認証情報（`GH_ORGANIZATION_TFSTATE_AWS_ACCESS_KEY_ID` / `GH_ORGANIZATION_TFSTATE_AWS_SECRET_ACCESS_KEY`）
 
 ## CI/CDパイプライン
 
@@ -103,4 +103,4 @@ organization-structure/
 | プルリクエスト | `on-pull-request.yml` | `check-code-style`（fmt）→ `validate` → `plan`（PRコメントにプランを投稿） |
 | mainへのマージ | `on-merge.yml` | `apply`（自動適用） |
 
-両ワークフローはTerraform v1.14.7を使用し、`CHLOE_CHAN_APP_PRIVATE_KEY`、`CHLOE_CHAN_APP_ID`、`TF_API_TOKEN` が必要です。
+両ワークフローはTerraform v1.14.7を使用し、`CHLOE_CHAN_APP_PRIVATE_KEY`、`CHLOE_CHAN_APP_ID`、`GH_ORGANIZATION_TFSTATE_AWS_ACCESS_KEY_ID`、`GH_ORGANIZATION_TFSTATE_AWS_SECRET_ACCESS_KEY` が必要です。
