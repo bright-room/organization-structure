@@ -15,6 +15,9 @@ jobs:
     defaults:
       run:
         working-directory: terraform
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.GH_ORGANIZATION_TFSTATE_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.GH_ORGANIZATION_TFSTATE_AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Generate GitHub App token
@@ -32,7 +35,6 @@ jobs:
         uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.14.7
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
         run: terraform init -lockfile=readonly
