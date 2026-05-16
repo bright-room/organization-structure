@@ -20,6 +20,19 @@ resource "github_repository" "this" {
   archive_on_destroy     = true
   auto_init              = true
 
+  # Secret scanning + push protection are free for public repos on Free orgs.
+  # AI detection and non-provider patterns belong to the paid GitHub Secret
+  # Protection product (Team/Enterprise + add-on) and are intentionally not
+  # configured here.
+  security_and_analysis {
+    secret_scanning {
+      status = "enabled"
+    }
+    secret_scanning_push_protection {
+      status = "enabled"
+    }
+  }
+
   lifecycle {
     # `pages` is the deprecated inline attribute on github_repository. Pages
     # itself is managed via the separate `github_repository_pages` resource
