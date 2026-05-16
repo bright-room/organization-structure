@@ -23,8 +23,25 @@ resource "github_repository" "this" {
   lifecycle {
     ignore_changes = [
       auto_init,
-      pages,
     ]
+  }
+}
+
+resource "github_repository_pages" "this" {
+  count = var.pages != null ? 1 : 0
+
+  repository     = github_repository.this.name
+  build_type     = var.pages.build_type
+  cname          = var.pages.cname
+  https_enforced = var.pages.https_enforced
+
+  dynamic "source" {
+    for_each = var.pages.source != null ? [var.pages.source] : []
+
+    content {
+      branch = source.value.branch
+      path   = source.value.path
+    }
   }
 }
 
