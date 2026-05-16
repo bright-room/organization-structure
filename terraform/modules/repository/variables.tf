@@ -105,6 +105,30 @@ variable "default_branch_protection" {
   default = {}
 }
 
+variable "pages" {
+  description = "GitHub Pages configuration (opt-in; null = Pages disabled)"
+  type = object({
+    build_type     = optional(string, "workflow")
+    cname          = optional(string, null)
+    https_enforced = optional(bool, null)
+    source = optional(object({
+      branch = string
+      path   = optional(string, "/")
+    }), null)
+  })
+  default = null
+
+  validation {
+    condition     = var.pages == null ? true : contains(["legacy", "workflow"], var.pages.build_type)
+    error_message = "pages.build_type must be either 'legacy' or 'workflow'."
+  }
+
+  validation {
+    condition     = var.pages == null ? true : (var.pages.build_type != "legacy" || var.pages.source != null)
+    error_message = "pages.source is required when build_type is 'legacy'."
+  }
+}
+
 variable "rulesets" {
   description = "Map of additional repository rulesets to create beyond the enforced baseline"
   type = map(object({

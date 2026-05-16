@@ -21,10 +21,33 @@ resource "github_repository" "this" {
   auto_init              = true
 
   lifecycle {
+    # `pages` is the deprecated inline attribute on github_repository. Pages
+    # itself is managed via the separate `github_repository_pages` resource
+    # below; we ignore the inline reflection so Terraform never tries to
+    # null it out, which the provider would translate into an API call that
+    # destroys the live Pages site.
     ignore_changes = [
       auto_init,
       pages,
     ]
+  }
+}
+
+resource "github_repository_pages" "this" {
+  count = var.pages != null ? 1 : 0
+
+  repository     = github_repository.this.name
+  build_type     = var.pages.build_type
+  cname          = var.pages.cname
+  https_enforced = var.pages.https_enforced
+
+  dynamic "source" {
+    for_each = var.pages.source != null ? [var.pages.source] : []
+
+    content {
+      branch = source.value.branch
+      path   = source.value.path
+    }
   }
 }
 
