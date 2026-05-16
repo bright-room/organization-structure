@@ -1,22 +1,24 @@
 resource "github_repository" "this" {
-  name                   = var.name
-  description            = var.description
-  homepage_url           = var.homepage_url
-  visibility             = var.visibility
-  has_issues             = var.has_issues
-  has_projects           = var.has_projects
-  has_wiki               = var.has_wiki
-  has_discussions        = var.has_discussions
-  allow_merge_commit     = var.allow_merge_commit
-  allow_squash_merge     = var.allow_squash_merge
-  allow_rebase_merge     = var.allow_rebase_merge
-  delete_branch_on_merge = var.delete_branch_on_merge
-  auto_init              = var.auto_init
-  is_template            = var.is_template
-  archived               = var.archived
-  archive_on_destroy     = var.archive_on_destroy
-  vulnerability_alerts   = var.vulnerability_alerts
-  topics                 = var.topics
+  name            = var.name
+  description     = var.description
+  homepage_url    = var.homepage_url
+  visibility      = var.visibility
+  has_issues      = var.has_issues
+  has_projects    = var.has_projects
+  has_wiki        = var.has_wiki
+  has_discussions = var.has_discussions
+  is_template     = var.is_template
+  archived        = var.archived
+  topics          = var.topics
+
+  allow_merge_commit = var.allow_merge_commit
+  allow_squash_merge = var.allow_squash_merge
+  allow_rebase_merge = var.allow_rebase_merge
+
+  # Baseline (enforced, not overridable):
+  delete_branch_on_merge = true
+  archive_on_destroy     = true
+  auto_init              = true
 
   lifecycle {
     ignore_changes = [
@@ -24,6 +26,10 @@ resource "github_repository" "this" {
       pages,
     ]
   }
+}
+
+resource "github_repository_vulnerability_alerts" "this" {
+  repository = github_repository.this.name
 }
 
 resource "github_issue_labels" "this" {
@@ -145,8 +151,6 @@ resource "github_issue_labels" "this" {
 }
 
 resource "github_repository_ruleset" "default_branch" {
-  count = var.default_branch_protection.enabled ? 1 : 0
-
   name        = "protect-default-branch"
   repository  = github_repository.this.name
   target      = "branch"

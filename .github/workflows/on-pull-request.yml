@@ -24,7 +24,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.7
+          terraform_version: 1.15.2
 
       - name: Check code-style
         run: terraform fmt -recursive -check
@@ -46,7 +46,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.7
+          terraform_version: 1.15.2
 
       - name: Terraform Init (Check Lockfile)
         run: terraform init -lockfile=readonly
@@ -82,7 +82,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.14.7
+          terraform_version: 1.15.2
 
       - name: Terraform Init
         run: terraform init -lockfile=readonly

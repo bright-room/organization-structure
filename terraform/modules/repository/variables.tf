@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------
+# Per-repository inputs. Security / operational baselines (vulnerability
+# alerts, delete branch on merge, archive on destroy, auto_init, default
+# branch protection ruleset, signed commits, tag protection, issue labels,
+# team assignment) are enforced as hardcoded values in main.tf and
+# intentionally cannot be overridden here.
+# ---------------------------------------------------------------------------
+
 variable "name" {
   description = "Repository name"
   type        = string
@@ -16,7 +24,7 @@ variable "homepage_url" {
 }
 
 variable "visibility" {
-  description = "Repository visibility (public only)"
+  description = "Repository visibility (public only — this module is for the public-repo half of the org)"
   type        = string
   default     = "public"
 
@@ -26,10 +34,10 @@ variable "visibility" {
   }
 }
 
-variable "default_branch" {
-  description = "Default branch name"
-  type        = string
-  default     = "main"
+variable "topics" {
+  description = "Repository topics"
+  type        = list(string)
+  default     = []
 }
 
 variable "has_issues" {
@@ -74,18 +82,6 @@ variable "allow_rebase_merge" {
   default     = true
 }
 
-variable "delete_branch_on_merge" {
-  description = "Automatically delete head branches after merge"
-  type        = bool
-  default     = true
-}
-
-variable "auto_init" {
-  description = "Initialize with README"
-  type        = bool
-  default     = true
-}
-
 variable "is_template" {
   description = "Whether this repository is a template"
   type        = bool
@@ -98,28 +94,9 @@ variable "archived" {
   default     = false
 }
 
-variable "archive_on_destroy" {
-  description = "Archive repository instead of deleting on destroy"
-  type        = bool
-  default     = true
-}
-
-variable "vulnerability_alerts" {
-  description = "Enable vulnerability alerts"
-  type        = bool
-  default     = true
-}
-
-variable "topics" {
-  description = "Repository topics"
-  type        = list(string)
-  default     = []
-}
-
 variable "default_branch_protection" {
-  description = "Default branch protection ruleset configuration"
+  description = "Per-repository tweaks for the default-branch protection ruleset (the ruleset itself is always enforced)"
   type = object({
-    enabled = optional(bool, true)
     required_status_checks = optional(list(object({
       context        = string
       integration_id = optional(number, null)
@@ -129,7 +106,7 @@ variable "default_branch_protection" {
 }
 
 variable "rulesets" {
-  description = "Map of repository rulesets to create"
+  description = "Map of additional repository rulesets to create beyond the enforced baseline"
   type = map(object({
     target      = string
     enforcement = optional(string, "active")
@@ -170,4 +147,3 @@ variable "organization_variables" {
   type        = set(string)
   default     = []
 }
-
