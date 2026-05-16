@@ -98,15 +98,21 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
-          cat <<EOF > /tmp/comment.md
-          <details>
-          <summary>Terraform Plan</summary>
+          {
+            echo '<details>'
+            echo '<summary>Terraform Plan</summary>'
+            echo
+            echo '```'
+            printf '%s\n' "$PLAN_OUTPUT"
+            echo '```'
+            echo '</details>'
+          } > /tmp/comment.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/comment.md
 
-          \`\`\`
-          ${PLAN_OUTPUT}
-          \`\`\`
-
-          </details>
-          EOF
-          gh pr comment ${{ github.event.number }} --body-file /tmp/comment.md
+      - name: Fail if plan failed
+        if: steps.plan.outcome != 'success'
+        run: |
+          echo "::error::terraform plan failed"
+          exit 1
