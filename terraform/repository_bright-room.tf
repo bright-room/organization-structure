@@ -22,10 +22,6 @@ module "repository_bright_room" {
     build_type     = "workflow"
     cname          = "bright-room.net"
     https_enforced = true
-    source = {
-      branch = "main"
-      path   = "/"
-    }
   }
 
   default_branch_protection = {
