@@ -32,6 +32,15 @@ resource "github_repository_vulnerability_alerts" "this" {
   repository = github_repository.this.name
 }
 
+# Baseline (enforced, not overridable): GITHUB_TOKEN defaults to read-only
+# so workflows that genuinely need write must declare `permissions:`
+# explicitly. Self-approval by Actions is disabled.
+resource "github_workflow_repository_permissions" "this" {
+  repository                       = github_repository.this.name
+  default_workflow_permissions     = "read"
+  can_approve_pull_request_reviews = false
+}
+
 resource "github_issue_labels" "this" {
   repository = github_repository.this.name
 
