@@ -38,10 +38,3 @@ module "repository_bright_room" {
     local.organization_variables.chloe_chan_app_id,
   ]
 }
-
-# Import the existing Pages site that was previously managed via the UI.
-# After this PR is applied successfully, the import block can be removed.
-import {
-  to = module.repository_bright_room.github_repository_pages.this[0]
-  id = "bright-room"
-}
