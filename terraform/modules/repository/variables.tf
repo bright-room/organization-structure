@@ -129,6 +129,24 @@ variable "pages" {
   }
 }
 
+variable "actions_permissions" {
+  description = "Opt-in Actions execution policy (null = leave repository defaults untouched). Useful for repositories holding sensitive secrets or running privileged automation."
+  type = object({
+    enabled              = optional(bool, true)
+    allowed_actions      = string
+    sha_pinning_required = optional(bool, false)
+    github_owned_allowed = optional(bool, true)
+    verified_allowed     = optional(bool, true)
+    patterns_allowed     = optional(list(string), [])
+  })
+  default = null
+
+  validation {
+    condition     = var.actions_permissions == null ? true : contains(["all", "local_only", "selected"], var.actions_permissions.allowed_actions)
+    error_message = "allowed_actions must be one of 'all', 'local_only', or 'selected'."
+  }
+}
+
 variable "rulesets" {
   description = "Map of additional repository rulesets to create beyond the enforced baseline"
   type = map(object({
