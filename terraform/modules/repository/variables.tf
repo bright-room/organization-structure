@@ -189,3 +189,21 @@ variable "organization_variables" {
   type        = set(string)
   default     = []
 }
+
+variable "languages" {
+  description = "repository-fanout が配布に使うリポの構成言語（renovate-config の preset 名と 1:1）"
+  type        = list(string)
+  default     = []
+}
+
+variable "bundles" {
+  description = "言語と独立な opt-in 配布束（oss 等）"
+  type        = list(string)
+  default     = []
+}
+
+variable "fanout_vars" {
+  description = "fanout テンプレ置換用の変数（codeowner 等）"
+  type        = map(string)
+  default     = {}
+}
