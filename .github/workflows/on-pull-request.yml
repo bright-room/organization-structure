@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
@@ -77,7 +77,7 @@ jobs:
           owner: bright-room
 
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
