@@ -50,3 +50,11 @@ jobs:
           TF_APPLY_OUTPUT: ${{ steps.apply.outputs.stdout }}
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: bash "${GITHUB_WORKSPACE}/.github/scripts/trigger-distribute-for-new-repos.sh"
+
+      - name: Trigger fanout sync
+        env:
+          FANOUT_URL: ${{ secrets.FANOUT_URL }}
+          FANOUT_HMAC_SECRET: ${{ secrets.FANOUT_HMAC_SECRET }}
+          ACCOUNT: bright-room
+          GITHUB_SHA: ${{ github.sha }}
+        run: bash "${GITHUB_WORKSPACE}/.github/scripts/fanout-sync.sh"

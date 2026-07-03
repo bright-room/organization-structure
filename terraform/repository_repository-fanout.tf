@@ -17,4 +17,7 @@ module "repository_repository_fanout" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  languages   = ["typescript"]
+  fanout_vars = { codeowner = "bright-room/br-maintainers" }
 }
