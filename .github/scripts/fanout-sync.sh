@@ -1,41 +1,25 @@
 #!/usr/bin/env bash
+# fanout へ manifest を送る(OIDC 認証・シークレット不要)。apply 成功後に on-merge から呼ぶ。
+# body は {manifest: {...}} エンベロープ(repository-fanout spec v2 §6.4)。
 set -euo pipefail
-# repository-fanout worker へ manifest を HMAC 署名付きで POST する。
-# 必須 env: FANOUT_URL, FANOUT_HMAC_SECRET, ACCOUNT, GITHUB_SHA
-# manifest は terraform output から取得（apply 後に実行する前提）。
 
-ts="$(date +%s)"
-manifest="$(terraform -chdir="${GITHUB_WORKSPACE}/terraform" output -json fanout_manifest)"
-if [ -z "$manifest" ] || [ "$manifest" = "null" ]; then
-  echo "::error::fanout_manifest output is empty"
-  exit 1
-fi
+: "${FANOUT_URL:?}" "${ACCOUNT:?}" "${GITHUB_SHA:?}"
+: "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:?}" "${ACTIONS_ID_TOKEN_REQUEST_URL:?}"
 
-# revision（単調増加する epoch 秒）と sourceCommit を付与
-body="$(echo "$manifest" | jq -c --argjson rev "$ts" --arg sha "$GITHUB_SHA" \
-  '. + {revision: $rev, sourceCommit: $sha}')"
+manifest=$(terraform -chdir="${GITHUB_WORKSPACE}/terraform" output -json fanout_manifest)
+revision=$(date +%s)
+body=$(jq -cn --argjson m "${manifest}" --arg rev "${revision}" --arg sha "${GITHUB_SHA}" \
+  '{manifest: ($m + {revision: ($rev | tonumber), sourceCommit: $sha})}')
 
-# HMAC-SHA256(secret, "<ts>.<body>") を hex で（worker signHmac と一致）
-sig="$(printf '%s.%s' "$ts" "$body" \
-  | openssl dgst -sha256 -hmac "$FANOUT_HMAC_SECRET" -hex | sed 's/^.*= //')"
+token=$(curl -sS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+  "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${FANOUT_URL}" | jq -r .value)
 
-for attempt in 1 2 3; do
-  code="$(curl -s -o /tmp/fanout-resp -w '%{http_code}' -X POST "${FANOUT_URL}/sync/${ACCOUNT}" \
-    -H "X-Fanout-Timestamp: ${ts}" \
-    -H "X-Fanout-Signature: ${sig}" \
-    -H "Content-Type: application/json" \
-    --data "$body" || true)"
-  if [ "$code" = "202" ]; then
-    echo "accepted"
-    cat /tmp/fanout-resp
-    echo
-    exit 0
-  fi
-  echo "attempt ${attempt}: HTTP ${code}"
-  cat /tmp/fanout-resp 2>/dev/null || true
-  echo
-  sleep $((attempt * 3))
+for i in 1 2 3; do
+  code=$(curl -sS -o /tmp/fanout-resp -w '%{http_code}' -X POST "${FANOUT_URL}/sync/${ACCOUNT}" \
+    -H "Authorization: Bearer ${token}" -H "content-type: application/json" -d "${body}")
+  if [ "${code}" = "202" ]; then cat /tmp/fanout-resp; exit 0; fi
+  echo "attempt ${i}: HTTP ${code} $(cat /tmp/fanout-resp)"
+  sleep $((i * 5))
 done
-
-echo "::error::fanout /sync not accepted after retries"
+echo "fanout sync failed after 3 attempts" >&2
 exit 1
