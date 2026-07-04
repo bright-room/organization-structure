@@ -48,12 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: terraform apply -no-color -auto-approve
 
-      - name: Distribute initial files to new repositories
-        env:
-          TF_APPLY_OUTPUT: ${{ steps.apply.outputs.stdout }}
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: bash "${GITHUB_WORKSPACE}/.github/scripts/trigger-distribute-for-new-repos.sh"
-
       - name: Trigger fanout sync
         env:
           FANOUT_URL: https://repository-fanout.bright-room.workers.dev
