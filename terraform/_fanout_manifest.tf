@@ -17,7 +17,7 @@ locals {
     name => merge(mod.fanout_entry, {
       contents = merge(local.fanout_default_contents, mod.fanout_entry.contents)
     })
-    if length(mod.fanout_entry.languages) > 0 || length(mod.fanout_entry.bundles) > 0
+    if mod.fanout_entry != null
   }
 }
 
