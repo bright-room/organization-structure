@@ -14,10 +14,10 @@ output "repo_id" {
 }
 
 output "fanout_entry" {
-  description = "fanout manifest の1リポ分エントリ（languages/bundles/vars）"
+  description = "fanout manifest の1リポ分エントリ（languages/bundles/contents）"
   value = {
     languages = var.languages
     bundles   = var.bundles
-    vars      = var.fanout_vars
+    contents  = var.fanout_contents
   }
 }

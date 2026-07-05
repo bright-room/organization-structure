@@ -18,6 +18,6 @@ module "repository_repository_fanout" {
     local.organization_variables.chloe_chan_app_id,
   ]
 
-  languages   = ["typescript"]
-  fanout_vars = { codeowner = "bright-room/br-maintainers" }
+  languages       = ["typescript"]
+  fanout_contents = { codeowner = "bright-room/br-maintainers" }
 }
