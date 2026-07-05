@@ -7,15 +7,15 @@ locals {
   }
 
   # アカウント既定の codeowner(spec §3: Org → bright-room/br-maintainers)。
-  # repo 側の fanout_vars.codeowner 指定が常に優先される。
-  fanout_default_vars = {
+  # repo 側の fanout_contents.codeowner 指定が常に優先される。
+  fanout_default_contents = {
     codeowner = "bright-room/br-maintainers"
   }
 
   fanout_repositories = {
     for name, mod in local.fanout_modules :
     name => merge(mod.fanout_entry, {
-      vars = merge(local.fanout_default_vars, mod.fanout_entry.vars)
+      contents = merge(local.fanout_default_contents, mod.fanout_entry.contents)
     })
     if length(mod.fanout_entry.languages) > 0 || length(mod.fanout_entry.bundles) > 0
   }

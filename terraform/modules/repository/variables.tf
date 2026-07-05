@@ -202,8 +202,8 @@ variable "bundles" {
   default     = []
 }
 
-variable "fanout_vars" {
-  description = "fanout テンプレ置換用の変数（codeowner 等）"
+variable "fanout_contents" {
+  description = "fanout テンプレートへ渡すリポ個別値（codeowner 等。旧 fanout_vars）"
   type        = map(string)
   default     = {}
 }
