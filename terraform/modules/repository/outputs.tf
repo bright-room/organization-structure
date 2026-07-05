@@ -14,13 +14,14 @@ output "repo_id" {
 }
 
 output "fanout_entry" {
-  description = "fanout manifest の1リポ分エントリ（languages/bundles/contents）"
-  value = {
-    languages = var.languages
-    bundles   = var.bundles
+  description = "fanout manifest の1リポ分エントリ（languages/bundles/contents/exclude）。fanout 未設定なら null（＝配布対象外）"
+  value = var.fanout == null ? null : {
+    languages = var.fanout.languages
+    bundles   = var.fanout.bundles
     contents = merge(
-      contains(var.bundles, "oss") ? { license_holder = var.license_holder } : {},
-      var.fanout_contents,
+      contains(var.fanout.bundles, "oss") ? { license_holder = var.license_holder } : {},
+      var.fanout.contents,
     )
+    exclude = var.fanout.exclude
   }
 }

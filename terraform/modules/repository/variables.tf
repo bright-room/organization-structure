@@ -190,26 +190,19 @@ variable "organization_variables" {
   default     = []
 }
 
-variable "languages" {
-  description = "repository-fanout が配布に使うリポの構成言語（renovate-config の preset 名と 1:1）"
-  type        = list(string)
-  default     = []
-}
-
-variable "bundles" {
-  description = "言語と独立な opt-in 配布束（oss 等）"
-  type        = list(string)
-  default     = []
-}
-
-variable "fanout_contents" {
-  description = "fanout テンプレートへ渡すリポ個別値（codeowner 等。旧 fanout_vars）"
-  type        = map(string)
-  default     = {}
+variable "fanout" {
+  description = "fanout 配布宣言。設定した時点で配布対象（profiles 空 = base のみ配布）。languages/bundles は renovate-config の preset 名と 1:1、contents はリポ個別値（codeowner 等）、exclude は fanout が触らないパス"
+  type = object({
+    languages = optional(list(string), [])
+    bundles   = optional(list(string), [])
+    contents  = optional(map(string), {})
+    exclude   = optional(list(string), [])
+  })
+  default = null
 }
 
 variable "license_holder" {
-  description = "oss bundle 配布時の LICENSE 著作権者。fanout_contents.license_holder のデフォルト"
+  description = "oss bundle 配布時の LICENSE 著作権者。fanout.contents.license_holder のデフォルト"
   type        = string
   default     = "bright-room"
 }
