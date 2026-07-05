@@ -18,6 +18,9 @@ output "fanout_entry" {
   value = {
     languages = var.languages
     bundles   = var.bundles
-    contents  = var.fanout_contents
+    contents = merge(
+      contains(var.bundles, "oss") ? { license_holder = var.license_holder } : {},
+      var.fanout_contents,
+    )
   }
 }

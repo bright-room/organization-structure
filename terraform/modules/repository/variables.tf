@@ -207,3 +207,9 @@ variable "fanout_contents" {
   type        = map(string)
   default     = {}
 }
+
+variable "license_holder" {
+  description = "oss bundle 配布時の LICENSE 著作権者。fanout_contents.license_holder のデフォルト"
+  type        = string
+  default     = "bright-room"
+}
