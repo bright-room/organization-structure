@@ -27,4 +27,9 @@ module "repository_endpoint_gate" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  fanout = {
+    languages = ["java"]
+    bundles   = ["oss"]
+  }
 }
