@@ -4,8 +4,6 @@
 locals {
   fanout_modules = {
     "repository-fanout" = module.repository_repository_fanout
-    "endpoint-gate"     = module.repository_endpoint_gate
-    "idem"              = module.repository_idem
     "mindstock"         = module.repository_mindstock
     "repo-policies"     = module.repository_repo_policies
   }
