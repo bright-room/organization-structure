@@ -14,5 +14,7 @@ module "repository_repo_policies" {
     ]
   }
 
-  fanout = {}
+  fanout = {
+    contents = { codeowner = "bright-room/br-owners" }
+  }
 }
