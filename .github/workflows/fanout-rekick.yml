@@ -6,9 +6,11 @@ on:
         description: "再実行するリポ名(カンマ区切り。空 = アカウント全リポ)"
         required: false
         default: ""
+
 permissions:
   id-token: write
   contents: read
+
 jobs:
   rekick:
     runs-on: ubuntu-latest
