@@ -6,6 +6,7 @@ locals {
     "repository-fanout" = module.repository_repository_fanout
     "mindstock"         = module.repository_mindstock
     "repo-policies"     = module.repository_repo_policies
+    "renovate-config"   = module.repository_renovate_config
   }
 
   # アカウント既定の codeowner(spec §3: Org → bright-room/br-maintainers)。

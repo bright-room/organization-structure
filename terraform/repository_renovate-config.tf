@@ -9,4 +9,6 @@ module "repository_renovate_config" {
   default_branch_protection = {
     required_status_checks = []
   }
+
+  fanout = {}
 }
