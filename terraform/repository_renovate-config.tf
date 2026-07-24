@@ -10,5 +10,7 @@ module "repository_renovate_config" {
     required_status_checks = []
   }
 
-  fanout = {}
+  fanout = {
+    contents = { codeowner = "bright-room/br-owners" }
+  }
 }

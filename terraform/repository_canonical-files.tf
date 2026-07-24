@@ -12,5 +12,7 @@ module "repository_canonical_files" {
     ]
   }
 
-  fanout = {}
+  fanout = {
+    contents = { codeowner = "bright-room/br-owners" }
+  }
 }
