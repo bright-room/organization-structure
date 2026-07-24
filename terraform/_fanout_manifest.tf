@@ -7,6 +7,7 @@ locals {
     "mindstock"         = module.repository_mindstock
     "repo-policies"     = module.repository_repo_policies
     "renovate-config"   = module.repository_renovate_config
+    "canonical-files"   = module.repository_canonical_files
   }
 
   # アカウント既定の codeowner(spec §3: Org → bright-room/br-maintainers)。

@@ -11,4 +11,6 @@ module "repository_canonical_files" {
       { context = "validate" },
     ]
   }
+
+  fanout = {}
 }
