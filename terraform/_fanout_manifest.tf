@@ -3,11 +3,14 @@
 # 注：配布対象 repo を増やしたら fanout_modules に1行追加する（spec §3 実装メモ）。
 locals {
   fanout_modules = {
-    "repository-fanout" = module.repository_repository_fanout
-    "mindstock"         = module.repository_mindstock
-    "repo-policies"     = module.repository_repo_policies
-    "renovate-config"   = module.repository_renovate_config
-    "canonical-files"   = module.repository_canonical_files
+    "br-cluster"           = module.repository_br_cluster
+    "bright-room"          = module.repository_bright_room
+    "canonical-files"      = module.repository_canonical_files
+    "garage-admin-console" = module.repository_garage_admin_console
+    "mindstock"            = module.repository_mindstock
+    "renovate-config"      = module.repository_renovate_config
+    "repo-policies"        = module.repository_repo_policies
+    "repository-fanout"    = module.repository_repository_fanout
   }
 
   # アカウント既定の codeowner(spec §3: Org → bright-room/br-maintainers)。
