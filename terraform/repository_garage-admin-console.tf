@@ -7,11 +7,14 @@ module "repository_garage_admin_console" {
   topics      = ["garage", "s3", "admin-console", "kotlin", "ktor", "compose-multiplatform", "material3"]
 
   default_branch_protection = {
-    required_status_checks = [
-      { context = "check" },
-      { context = "build" },
-      { context = "e2e" }
-    ]
+    required_status_checks = concat(
+      [
+        { context = "check" },
+        { context = "build" },
+        { context = "e2e" }
+      ],
+      local.security_status_checks,
+    )
   }
 
   organization_secrets = [
@@ -21,4 +24,8 @@ module "repository_garage_admin_console" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  fanout = {
+    languages = ["kotlin"]
+  }
 }

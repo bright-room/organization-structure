@@ -6,8 +6,6 @@ module "repository_repo_policies" {
   visibility  = "public"
   topics      = ["conftest", "opa", "rego", "policy-as-code", "security"]
 
-  # policy は各リポの security.yml から main 参照で即時反映されるため、
-  # main への変更は CI(conftest verify)green を必須にする
   default_branch_protection = {
     required_status_checks = concat(
       [{ context = "verify" }],
