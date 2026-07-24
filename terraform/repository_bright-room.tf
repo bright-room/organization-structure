@@ -25,9 +25,10 @@ module "repository_bright_room" {
   }
 
   default_branch_protection = {
-    required_status_checks = [
-      { context = "check" }
-    ]
+    required_status_checks = concat(
+      [{ context = "check" }],
+      local.security_status_checks,
+    )
   }
 
   organization_secrets = [
@@ -37,4 +38,8 @@ module "repository_bright_room" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  fanout = {
+    languages = ["kotlin"]
+  }
 }
