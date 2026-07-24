@@ -7,7 +7,7 @@ module "repository_mindstock" {
   topics      = ["inventory", "household"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = local.security_status_checks
   }
 
   organization_secrets = [

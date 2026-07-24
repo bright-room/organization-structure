@@ -7,9 +7,10 @@ module "repository_canonical_files" {
   topics      = ["repository-fanout", "templates", "renovate-config"]
 
   default_branch_protection = {
-    required_status_checks = [
-      { context = "validate" },
-    ]
+    required_status_checks = concat(
+      [{ context = "validate" }],
+      local.security_status_checks,
+    )
   }
 
   fanout = {

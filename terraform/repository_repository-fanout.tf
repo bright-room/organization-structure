@@ -7,7 +7,7 @@ module "repository_repository_fanout" {
   topics      = ["github-app", "cloudflare-workers", "cloudflare-workflows", "automation", "typescript", "file-distribution"]
 
   default_branch_protection = {
-    required_status_checks = []
+    required_status_checks = local.security_status_checks
   }
 
   organization_secrets = [
