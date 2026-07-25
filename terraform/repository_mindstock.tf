@@ -20,6 +20,5 @@ module "repository_mindstock" {
 
   fanout = {
     languages = ["kotlin"]
-    bundles   = ["oss"]
   }
 }
