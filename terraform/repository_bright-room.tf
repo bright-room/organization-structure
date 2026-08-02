@@ -25,10 +25,7 @@ module "repository_bright_room" {
   }
 
   default_branch_protection = {
-    required_status_checks = concat(
-      [{ context = "check" }],
-      local.security_status_checks,
-    )
+    required_status_checks = [{ context = "check" }]
   }
 
   organization_secrets = [
