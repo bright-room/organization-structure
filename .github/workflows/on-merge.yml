@@ -11,7 +11,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
-      id-token: write
     defaults:
       run:
         working-directory: terraform
@@ -44,10 +43,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: terraform apply -no-color -auto-approve
-
-      - name: Trigger fanout sync
-        env:
-          FANOUT_URL: https://repository-fanout.bright-room.workers.dev
-          ACCOUNT: bright-room
-          GITHUB_SHA: ${{ github.sha }}
-        run: bash "${GITHUB_WORKSPACE}/.github/scripts/fanout-sync.sh"
