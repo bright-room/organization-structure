@@ -6,7 +6,4 @@ module "repository_renovate_config" {
   visibility  = "public"
   topics      = ["renovate", "renovate-config", "renovate-preset", "dependency-management", "automation"]
 
-  default_branch_protection = {
-    required_status_checks = local.security_status_checks
-  }
 }

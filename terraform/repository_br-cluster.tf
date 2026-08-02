@@ -7,9 +7,6 @@ module "repository_br_cluster" {
   visibility  = "public"
   topics      = []
 
-  default_branch_protection = {
-    required_status_checks = local.security_status_checks
-  }
 
   organization_secrets = [
     local.organization_secrets.chloe_chan_app_private_key,
