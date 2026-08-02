@@ -18,8 +18,4 @@ module "repository_br_cluster" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
-
-  fanout = {
-    languages = ["python"]
-  }
 }

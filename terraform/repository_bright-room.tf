@@ -38,8 +38,4 @@ module "repository_bright_room" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
-
-  fanout = {
-    languages = ["kotlin"]
-  }
 }

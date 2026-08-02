@@ -189,20 +189,3 @@ variable "organization_variables" {
   type        = set(string)
   default     = []
 }
-
-variable "fanout" {
-  description = "fanout 配布宣言。設定した時点で配布対象（profiles 空 = base のみ配布）。languages/bundles は renovate-config の preset 名と 1:1、contents はリポ個別値（codeowner 等）、exclude は fanout が触らないパス"
-  type = object({
-    languages = optional(list(string), [])
-    bundles   = optional(list(string), [])
-    contents  = optional(map(string), {})
-    exclude   = optional(list(string), [])
-  })
-  default = null
-}
-
-variable "license_holder" {
-  description = "oss bundle 配布時の LICENSE 著作権者。fanout.contents.license_holder のデフォルト"
-  type        = string
-  default     = "bright-room"
-}

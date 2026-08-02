@@ -12,8 +12,4 @@ module "repository_canonical_files" {
       local.security_status_checks,
     )
   }
-
-  fanout = {
-    contents = { codeowner = "bright-room/br-owners" }
-  }
 }

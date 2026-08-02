@@ -9,8 +9,4 @@ module "repository_renovate_config" {
   default_branch_protection = {
     required_status_checks = local.security_status_checks
   }
-
-  fanout = {
-    contents = { codeowner = "bright-room/br-owners" }
-  }
 }
