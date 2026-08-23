@@ -10,7 +10,8 @@ module "repository_garage_admin_console" {
     required_status_checks = [
       { context = "check" },
       { context = "build" },
-      { context = "e2e" }
+      { context = "e2e" },
+      { context = "sca" }
     ]
   }
 
