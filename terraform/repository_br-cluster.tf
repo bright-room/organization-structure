@@ -35,4 +35,22 @@ module "repository_br_cluster" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  default_branch_protection = {
+    required_status_checks = [
+      { context = "action-lint" },
+      { context = "ansible-lint" },
+      { context = "kustomize-build + kubeconform" },
+      { context = "flux-local-test" },
+      { context = "policy-test" },
+      { context = "packer-fmt" },
+      { context = "Lint" },
+      { context = "Test" },
+      { context = "yaml-lint" },
+      { context = "hidden-content" },
+      { context = "secrets" },
+      { context = "sca" },
+      { context = "workflow-audit" },
+    ]
+  }
 }
