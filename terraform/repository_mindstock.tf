@@ -14,4 +14,18 @@ module "repository_mindstock" {
   organization_variables = [
     local.organization_variables.chloe_chan_app_id,
   ]
+
+  default_branch_protection = {
+    required_status_checks = [
+      { context = "lint" },
+      { context = "test-backend" },
+      { context = "test-frontend" },
+      { context = "integration-test" },
+      { context = "hidden-unicode" },
+      { context = "secrets" },
+      { context = "sca" },
+      { context = "workflow-audit" },
+      { context = "actionlint" },
+    ]
+  }
 }
