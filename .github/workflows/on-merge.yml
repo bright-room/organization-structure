@@ -21,17 +21,20 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v3
+        # 組織全体を terraform で管理するため、トークンの対象リポも権限も絞れない
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0 # zizmor: ignore[github-app]
         with:
           app-id: ${{ vars.MINERVA_SAMA_APP_ID }}
           private-key: ${{ secrets.MINERVA_SAMA_APP_PRIVATE_KEY }}
-          owner: bright-room
+          owner: bright-room # zizmor: ignore[github-app] 同上(組織全体が対象)
 
       - name: Checkout Repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
           terraform_version: 1.15.2
 
