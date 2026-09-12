@@ -21,7 +21,7 @@ module "repository_mindstock" {
       { context = "test-backend" },
       { context = "test-frontend" },
       { context = "integration-test" },
-      { context = "hidden-unicode" },
+      { context = "hidden-content" },
       { context = "secrets" },
       { context = "sca" },
       { context = "workflow-audit" },

@@ -27,7 +27,7 @@ module "repository_bright_room" {
   default_branch_protection = {
     required_status_checks = [
       { context = "check" },
-      { context = "hidden-unicode" },
+      { context = "hidden-content" },
       { context = "secrets" },
       { context = "sca" },
       { context = "workflow-audit" },

@@ -47,7 +47,7 @@ module "repository_br_cluster" {
       { context = "Lint" },
       { context = "Test" },
       { context = "yaml-lint" },
-      { context = "hidden-unicode" },
+      { context = "hidden-content" },
       { context = "secrets" },
       { context = "sca" },
       { context = "workflow-audit" },

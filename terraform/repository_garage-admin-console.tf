@@ -10,7 +10,7 @@ module "repository_garage_admin_console" {
     required_status_checks = [
       { context = "build" },
       { context = "e2e" },
-      { context = "hidden-unicode" },
+      { context = "hidden-content" },
       { context = "secrets" },
       { context = "sca" },
       { context = "workflow-audit" },

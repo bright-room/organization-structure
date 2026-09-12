@@ -10,7 +10,7 @@ module "repository_renovate_config" {
   default_branch_protection = {
     required_status_checks = [
       { context = "validate" },
-      { context = "hidden-unicode" },
+      { context = "hidden-content" },
       { context = "secrets" },
       { context = "sca" },
       { context = "workflow-audit" },
