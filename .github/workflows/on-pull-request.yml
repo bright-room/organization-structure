@@ -102,27 +102,28 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: terraform plan -no-color
+        run: terraform plan -no-color -detailed-exitcode -out=tfplan
 
-      - name: Plan result
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
-          PR_NUMBER: ${{ github.event.number }}
+      # action は terraform を実行しないため、show の出力をファイルに書いて渡す。
+      # composite action 内のステップは working-directory を引き継がないので絶対パスにする。
+      - name: Terraform show
+        if: steps.plan.outputs.exitcode == '2'
         run: |
-          {
-            echo '<details>'
-            echo '<summary>Terraform Plan</summary>'
-            echo
-            echo '```'
-            printf '%s\n' "$PLAN_OUTPUT"
-            echo '```'
-            echo '</details>'
-          } > /tmp/comment.md
-          gh pr comment "$PR_NUMBER" --body-file /tmp/comment.md
+          terraform show -json tfplan > "${RUNNER_TEMP}/plan.json"
+          terraform show -no-color tfplan > "${RUNNER_TEMP}/plan.txt"
 
+      - name: Comment plan result
+        uses: kukv/terraform-plan-comment-action@9e0f42a0e418a10d7505a4978ebcdf9143bfaaaa # v1.0.0
+        with:
+          exitcode: ${{ steps.plan.outputs.exitcode }}
+          plan-json: ${{ runner.temp }}/plan.json
+          plan-text: ${{ runner.temp }}/plan.txt
+          error-message: ${{ steps.plan.outputs.stderr }}
+          github-token: ${{ steps.app-token.outputs.token }}
+
+      # -detailed-exitcode では変更ありが 2 で返るため、outcome ではなく exitcode で判定する
       - name: Fail if plan failed
-        if: steps.plan.outcome != 'success'
+        if: steps.plan.outputs.exitcode != '0' && steps.plan.outputs.exitcode != '2'
         run: |
           echo "::error::terraform plan failed"
           exit 1
