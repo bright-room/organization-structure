@@ -1,5 +1,7 @@
 # organization-structure
 
+> **このリポジトリはアーカイブされました。** 管理は [bright-room/structure](https://github.com/bright-room/structure) に統合されています。
+
 [English version](README.md)
 
 **bright-room** GitHub組織のリポジトリを管理するためのTerraform設定です。

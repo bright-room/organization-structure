@@ -1,5 +1,7 @@
 # organization-structure
 
+> **This repository has been archived.** Management is consolidated into [bright-room/structure](https://github.com/bright-room/structure).
+
 [日本語版はこちら](README_ja.md)
 
 Terraform configuration for managing GitHub repositories in the **bright-room** organization.
